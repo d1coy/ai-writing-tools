@@ -1,2 +1,2 @@
-# ai-writing-tools
-The AI writing tools
+# AI Writing Tools
+
