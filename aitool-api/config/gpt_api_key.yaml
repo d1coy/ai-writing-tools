@@ -1,0 +1,4 @@
+api-key: ''
+basic-url: 'https://genai.hkbu.edu.hk/general/rest'
+model-name: 'gpt-4-o-mini'
+api-version: '2024-05-01-preview'

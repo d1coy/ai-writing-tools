@@ -21,3 +21,7 @@ Install dependency
 ```bash
 pip install -r /path/to/requirements.txt
 ```
+
+### LLM API Key
+
+Fill in your LLM API Key in `config/gpt_api_key.yaml`
