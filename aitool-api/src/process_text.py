@@ -1,6 +1,7 @@
+from utils.common_utils import get_llm_api_url, get_llm_api_headers, success, failure
 import requests
 
-def submit_single_interaction(prompt, mode, max_words=200):
+def submit_single_interaction(prompt, mode, max_words=200, config):
     """
     Handles a single interaction for expanding or summarizing text.
 
@@ -23,8 +24,8 @@ def submit_single_interaction(prompt, mode, max_words=200):
         return "Invalid mode. Please specify 'expand' or 'extract'."
 
     conversation = [{"role": "user", "content": f"{instruction}{max_words}\n{prompt}"}]
-    url = f"{basicUrl}/deployments/{modelName}/chat/completions/?api-version={apiVersion}"
-    headers = {'Content-Type': 'application/json', 'api-key': apiKey}
+    url = get_llm_api_url(config)
+    headers = get_llm_api_headers(config)
     payload = {'messages': conversation, 'temperature': 0.6}
 
     response = requests.post(url, json=payload, headers=headers)
