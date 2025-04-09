@@ -38,6 +38,23 @@ def summarize():
         return jsonify(failure(code=500, message=summary_result))
     return jsonify({"summary": summary_result})
 
+@app.route('/process_text', methods=['POST'])
+def process_text():
+    data = request.get_json()
+    if (data is None
+            or not isinstance(data, dict)
+            or data.get('prompt') is None
+            or data.get('mode') not in ['expand', 'extract']):
+        return jsonify(failure(code=400, message='Invalid input data. Ensure "prompt" and "mode" are provided, and "mode" is either "expand" or "extract".'))
+    max_words = data.get('max_words', 200)
+    if not isinstance(max_words, int) or max_words <= 0:
+        return jsonify(failure(code=400, message='"max_words" must be a positive integer.'))
+    try:
+        result = submit_single_interaction(data['prompt'], data['mode'], max_words)
+        return jsonify(success(data=result))
+    except Exception as e:
+        return jsonify(failure(code=500, message=f"An error occurred: {str(e)}"))
+
 if __name__ == '__main__':
     config_dir = os.path.join('..', 'config')
     server_config_file_name = 'config_server_dev.yaml'
