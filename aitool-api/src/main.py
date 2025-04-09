@@ -55,6 +55,26 @@ def process_text():
     except Exception as e:
         return jsonify(failure(code=500, message=f"An error occurred: {str(e)}"))
 
+@app.route('/format', methods=['POST'])
+def convert_txt_to_docx():
+    data = request.get_json()
+    if (data is None
+            or not isinstance(data, dict)
+            or data.get('input_path') is None):
+        return jsonify(failure(code=400, message='Missing input_path'))
+    input_txt_file = data['input_path']
+    if not input_txt_file.lower().endswith('.txt'):
+        return jsonify(failure(code=400, message='Only .txt files are supported'))
+    try:
+        directory = os.path.dirname(input_txt_file)
+        base_name = os.path.basename(input_txt_file).replace(".txt", "")
+        output_docx_file = os.path.join(directory, f"{base_name}_converted.docx")
+        process_file(input_txt_file, output_docx_file)
+        return jsonify(success(message='File converted successfully',
+                               output_path=output_docx_file))
+    except Exception as e:
+        return jsonify(failure(code=500, message=f"Conversion error: {str(e)}"))
+        
 if __name__ == '__main__':
     config_dir = os.path.join('..', 'config')
     server_config_file_name = 'config_server_dev.yaml'
