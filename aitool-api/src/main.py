@@ -26,6 +26,17 @@ def translate():
     obj = translate_service(data['content'], data['target_lang'], gpt_api_config)
     return jsonify(obj)
 
+@app.route('/summary', methods=['POST'])
+def summarize():
+    data = request.get_json()
+    if (data is None
+            or not isinstance(data, dict)
+            or data.get('content') is None):
+        return jsonify(failure(code=400, message='Data error'))
+    summary_result = summarize_text_once(data['content']) 
+    if summary_result.startswith("Error:"):
+        return jsonify(failure(code=500, message=summary_result))
+    return jsonify({"summary": summary_result})
 
 if __name__ == '__main__':
     config_dir = os.path.join('..', 'config')
