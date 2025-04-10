@@ -6,7 +6,5 @@ import WriteTool from './components/WriteTool.vue'
   <WriteTool />
 </template>
 
-
 <style scoped>
-
 </style>
