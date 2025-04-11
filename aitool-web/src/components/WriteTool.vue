@@ -2,6 +2,14 @@
   import axios from 'axios'
   import { ref } from 'vue'
 
+  const VITE_BASE_URL = import.meta.env.VITE_BASE_URL
+  const VITE_ENV = import.meta.env.VITE_ENV
+  const apiPrefix = VITE_ENV === 'prod' ? '' : '/api'
+  const baseURL = VITE_BASE_URL || ''
+  const apiClient = axios.create({
+     baseURL: baseURL,
+  })
+
   const selectedLanguage = ref('English')
   const languages = ref([
     'English', 'Simplified Chinese', 'Traditional Chinese', 'Cantonese', 'Japanese', 'Korean',
@@ -61,7 +69,7 @@
       }
     }
     if (mode.value === 'translate') {
-      axios.post('/api/translate', {
+      apiClient.post(apiPrefix + '/translate', {
         content: inputText.value,
         target_lang: selectedLanguage.value,
       })
@@ -77,7 +85,7 @@
         console.log(e)
       })
     } else if (mode.value === 'tone') {
-      axios.post('/api/tone', {
+      apiClient.post(apiPrefix + '/tone', {
         text: inputText.value,
         style: selectedTone.value.toLowerCase(),
       })
@@ -93,7 +101,7 @@
         console.log(e)
       })
     } else if (mode.value === 'length') {
-      axios.post('/api/process-text', {
+      apiClient.post(apiPrefix + '/process-text', {
         prompt: inputText.value,
         mode: selectedLengthMode.value.toLowerCase(),
         max_word: selectedLength.value,
@@ -110,7 +118,7 @@
         console.log(e)
       })
     } else if (mode.value === 'summary') {
-      axios.post('/api/summary', {
+      apiClient.post(apiPrefix + '/summary', {
         prompt: inputText.value,
       })
       .then((res) => {
@@ -128,7 +136,7 @@
       const formData = new FormData()
       // @ts-ignore
       formData.append('file', formatFile.value)
-      axios.post('/api/format-text', formData, {
+      apiClient.post(apiPrefix + '/format-text', formData, {
         responseType: 'blob'
       })
       .then((res) => {
@@ -151,7 +159,7 @@
       // @ts-ignore
       formData.append('file', roleFile.value)
       formData.append('content', inputText.value)
-      axios.post('/api/role', 
+      apiClient.post(apiPrefix + '/role', 
         formData
       )
       .then((res) => {
