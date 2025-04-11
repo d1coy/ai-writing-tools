@@ -57,6 +57,7 @@ def update_env_config(server_config: Dict, gpt_api_config: Dict):
         'port': os.getenv('SERVER_PORT'),
         'debug': os.getenv('SERVER_DEBUG'),
         'api_key': os.getenv('API_KEY'),
+        'environment': os.getenv('SERVER_ENVIRONMENT'),
     }
     if server_config is not None:
         if env['ip'] is not None:
@@ -68,5 +69,7 @@ def update_env_config(server_config: Dict, gpt_api_config: Dict):
                 server_config['server']['debug'] = True
             elif env['debug'].lower() == 'false':
                 server_config['server']['debug'] = False
+        if env['environment'] is not None:
+            server_config['server']['environment'] = env['environment']
     if gpt_api_config is not None and env['api_key'] is not None:
         gpt_api_config['api_key'] = env['api_key']
