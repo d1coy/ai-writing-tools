@@ -1,3 +1,4 @@
+import os
 import yaml
 from typing import Dict
 from utils.common_utils import default_config_update
@@ -48,3 +49,24 @@ def load_gpt_api_config(config_file_path: str) -> Dict:
         print('Error parsing YAML.')
 
     return default_config
+
+
+def update_env_config(server_config: Dict, gpt_api_config: Dict):
+    env = {
+        'ip': os.getenv('SERVER_IP'),
+        'port': os.getenv('SERVER_PORT'),
+        'debug': os.getenv('SERVER_DEBUG'),
+        'api_key': os.getenv('API_KEY'),
+    }
+    if server_config is not None:
+        if env['ip'] is not None:
+            server_config['server']['ip'] = env['ip']
+        if env['port'] is not None:
+            server_config['server']['port'] = int(env['port'])
+        if env['debug'] is not None:
+            if env['debug'].lower() == 'true':
+                server_config['server']['debug'] = True
+            elif env['debug'].lower() == 'false':
+                server_config['server']['debug'] = False
+    if gpt_api_config is not None and env['api_key'] is not None:
+        gpt_api_config['api_key'] = env['api_key']

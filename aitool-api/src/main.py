@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
-from config_loader import load_config, load_gpt_api_config
+from config_loader import load_config, load_gpt_api_config, update_env_config
 from utils.common_utils import is_empty, failure
 from translate import translate as translate_service
 from tone import text_with_style as tone_service
@@ -136,6 +136,7 @@ if __name__ == '__main__':
     gpt_api_config_file_name = 'gpt_api_key.yaml'
     server_config = load_config(os.path.join(config_dir, server_config_file_name))
     gpt_api_config = load_gpt_api_config(os.path.join(config_dir, gpt_api_config_file_name))
+    update_env_config(server_config, gpt_api_config)
     if server_config:
         app.run(host=server_config['server']['ip'],
                 port=server_config['server']['port'],
