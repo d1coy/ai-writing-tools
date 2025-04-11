@@ -15,12 +15,6 @@ app.json.ensure_ascii = False
 CORS(app)
 
 
-@app.before_request
-def remove_api_prefix():
-    if server_config['server']['environment'] == 'prod':
-        request.path.replace('/api/', '/', 1)
-
-
 @app.route('/')
 def hello():
     return 'hi'
