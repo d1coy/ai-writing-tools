@@ -18,10 +18,7 @@ CORS(app)
 @app.before_request
 def remove_api_prefix():
     if server_config['server']['environment'] == 'prod':
-        if request.path.startswith('/api'):
-            request.path.replace('/api', '', 1)
-            if hasattr(request, 'routing_exception'):
-                return app.handle_user_exception(request.routing_exception)
+        request.path.replace('/api/', '/', 1)
 
 
 @app.route('/')
