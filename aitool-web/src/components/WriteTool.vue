@@ -292,10 +292,10 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-btn @click="process">
+    <v-btn class="ml-4 mb-4" @click="process">
       Process
     </v-btn>
-    <v-btn @click="reset">
+    <v-btn class="ml-4 mb-4" @click="reset">
       Reset
     </v-btn>
   </div>
