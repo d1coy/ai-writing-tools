@@ -142,10 +142,10 @@
       .then((res) => {
         if (res.status === 200) {
           if (res.headers['content-type'] === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-            console.log(res.headers['content-disposition'])
-            console.log(res.headers['content-disposition'].match(/filename=(.+)/)[1])
+            console.log(res.headers)
+            // console.log(res.headers['content-disposition'])
+            // console.log(res.headers['content-disposition'].match(/filename=(.+)/)[1])
             // download(res.data, res.headers['content-disposition'].match(/filename=(.+)/)[1])
-            download(res.data, res.headers['content-disposition'].match(/filename=(.+)/)[1])
           } else {
             if (!res.data.success) {
               console.log(res.data.message)
