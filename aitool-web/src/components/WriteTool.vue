@@ -142,6 +142,9 @@
       .then((res) => {
         if (res.status === 200) {
           if (res.headers['content-type'] === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+            console.log(res.headers['content-disposition'])
+            console.log(res.headers['content-disposition'].match(/filename=(.+)/)[1])
+            // download(res.data, res.headers['content-disposition'].match(/filename=(.+)/)[1])
             download(res.data, res.headers['content-disposition'].match(/filename=(.+)/)[1])
           } else {
             if (!res.data.success) {
@@ -179,10 +182,7 @@
   function download(data: Blob, filename: string) {
     const a = document.createElement('a')
     const url = window.URL || window.webkitURL
-    console.log('URL\n')
-    console.log(url)
     const herf = url.createObjectURL(data)
-    console.log('herf\n')
     console.log(herf)
     a.href = herf
     a.download = filename
