@@ -180,7 +180,6 @@
     const a = document.createElement('a')
     const url = window.URL || window.webkitURL
     const herf = url.createObjectURL(data)
-    console.log(herf)
     a.href = herf
     a.download = filename
     document.body.appendChild(a)
